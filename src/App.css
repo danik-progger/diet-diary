@@ -1,0 +1,1445 @@
+@font-face {
+  font-family: "Jost";
+  src: url("./assets/fonts/Jost-variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Jost";
+  src: url("./assets/fonts/Jost-italic-variable.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --light-purple: #b69ae8;
+  --purple: #9768df;
+  --light-red: #ff8ba5;
+  --red: #ff5580;
+  --light-yellow: #ffd17d;
+  --yellow: #ff9b19;
+  --light-green: #78bbb3;
+  --green: #16988b;
+  --teal: #328783;
+  --pale-purple: #f0e9fc;
+  color: #111714;
+  background: #fff;
+  font-family: "Jost", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: inherit;
+  letter-spacing: -0.1em;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scrollbar-width: none;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background: #fff;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a,
+select {
+  touch-action: manipulation;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #00aa78;
+  outline-offset: 3px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.meal-types button:focus-visible,
+.meal-card button:focus-visible,
+.meal-dialog button:focus-visible {
+  outline: 0;
+  box-shadow: none;
+  filter: none;
+}
+
+#content {
+  scroll-margin-top: 24px;
+}
+
+.day-view {
+  touch-action: pan-y;
+  overscroll-behavior-x: contain;
+  background: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chat-view {
+  min-height: calc(100dvh - 146px);
+  width: min(784px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.chat-screen {
+  display: flex;
+  min-height: calc(100dvh - 146px);
+  flex-direction: column;
+  padding-bottom: 12px;
+}
+
+.chat-screen__messages { display: grid; align-content: start; gap: 12px; flex: 1; padding-bottom: 20px; }
+
+.chat-message {
+  width: fit-content;
+  max-width: min(88%, 420px);
+  padding: 16px 18px;
+  border-radius: 32px;
+  color: #382b50;
+}
+
+.chat-message p { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.45; }
+.chat-message--coach { background: var(--pale-purple); }
+.chat-message--you { justify-self: end; background: var(--purple); color: #fff; }
+
+.chat-message__suggestion {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 32px;
+  background: #fff;
+  color: var(--purple);
+}
+
+.chat-message__suggestion span { font-size: 9px; font-weight: 900; }
+.chat-message__suggestion strong { margin-left: auto; color: #47365f; font-size: 18px; font-weight: 900; }
+
+.chat-composer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 66px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 32px;
+  background: var(--pale-purple);
+}
+
+.chat-composer input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #47365f; font-size: 14px; font-weight: 600; }
+.chat-composer input::placeholder { color: #aaa1b5; }
+.chat-composer__add, .chat-composer__send { display: grid; width: 46px; height: 46px; flex: 0 0 auto; place-items: center; border: 0; border-radius: 32px; }
+.chat-composer__add { background: #fff; color: var(--purple); }
+.chat-composer__send { background: var(--purple); color: #fff; }
+.chat-composer__send:disabled { background: #e8e0f4; color: #a99bbb; cursor: default; }
+
+.stats-view {
+  height: calc(100dvh - 108px);
+  width: min(784px, calc(100% - 40px));
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.day-view > .section-placeholder {
+  width: min(784px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.day-view:focus {
+  outline: 0;
+  box-shadow: none;
+}
+
+.day-view__content--older {
+  animation: day-slide-older 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.day-view__content--newer {
+  animation: day-slide-newer 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes day-slide-older {
+  0% {
+    transform: translateX(8%);
+  }
+  72% {
+    transform: translateX(-1.5%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes day-slide-newer {
+  0% {
+    transform: translateX(-8%);
+  }
+  72% {
+    transform: translateX(1.5%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.app-shell {
+  width: 100%;
+  padding: 0;
+}
+
+.app-shell--stats {
+  padding-bottom: 0;
+}
+
+.app-footer {
+  position: fixed;
+  z-index: 5;
+  left: 50%;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(304px, calc(100% - 40px));
+  padding: 6px;
+  border: 1px solid #e5deeb;
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgb(67 48 83 / 12%);
+  transform: translateX(-50%);
+}
+
+.app-footer nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.app-footer__item {
+  display: grid;
+  min-height: 48px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #92879c;
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+
+.app-footer__item:hover {
+  color: var(--purple);
+}
+
+.app-footer__item--active {
+  color: var(--purple);
+}
+
+.app-footer__item:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: -4px;
+  border-radius: 32px;
+}
+
+.section-placeholder {
+  min-height: 320px;
+  padding: 30px;
+  border: 1px solid #dce2dd;
+  border-radius: 32px;
+  background: #fff;
+}
+
+.section-placeholder p {
+  margin: 12px 0 0;
+  color: #69746d;
+}
+
+.health-settings-button {
+  margin-top: 20px;
+  border-radius: 32px;
+  background: var(--purple);
+  color: #fff;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 12px;
+  left: 12px;
+  padding: 10px 14px;
+  border-radius: 32px;
+  background: #111714;
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform 160ms ease-out;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.app-header,
+.dialog-heading {
+  display: flex;
+  align-items: center;
+}
+
+.app-header {
+  justify-content: space-between;
+  width: min(784px, calc(100% - 40px));
+  min-height: 62px;
+  margin: 0 auto;
+}
+
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.theme-toggle {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--purple);
+}
+
+.theme-toggle:hover { background: var(--pale-purple); }
+
+.brand {
+  color: var(--purple);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.header-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--red);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.streak-flame {
+  display: block;
+  overflow: visible;
+}
+
+.streak-flame__outer {
+  fill: var(--red);
+  transform-origin: 50% 85%;
+  animation: streak-flame-pop 700ms cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+.streak-flame__inner {
+  fill: var(--yellow);
+  transform-origin: 50% 85%;
+  animation: streak-flame-pop 650ms 90ms cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+.streak-flame__heart { fill: var(--red); }
+
+.header-streak:hover .streak-flame__outer,
+.header-streak:hover .streak-flame__inner {
+  animation: streak-flame-pop 600ms cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+@keyframes streak-flame-pop {
+  0% { transform: scale(.7) rotate(-8deg); }
+  55% { transform: scale(1.13) rotate(4deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .streak-flame__outer,
+  .streak-flame__inner { animation: none !important; }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  font-weight: 800;
+  transition: background-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out;
+}
+
+.dashboard {
+  display: grid;
+  gap: 20px;
+  margin-top: 42px;
+}
+
+.summary-heading {
+  display: grid;
+  gap: 4px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-variant-numeric: tabular-nums;
+}
+
+h1,
+h2,
+h3 {
+  color: #111714;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.1;
+}
+
+h2 {
+  margin: 4px 0 0;
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.summary-card,
+.meals-card {
+  border-radius: 32px;
+  background: #fff;
+}
+
+.nutrition-charts {
+  display: grid;
+  gap: 10px;
+  overflow: visible;
+  width: min(380px, calc(100% - 40px));
+  margin: 0 auto;
+  border-radius: 0;
+  background: transparent;
+}
+
+.nutrition-charts__macros {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stats-scroll {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.stats-section {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 3fr repeat(3, 2fr);
+  gap: 6px;
+  overflow: hidden;
+}
+
+.stats-chart {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 32px;
+  color: #fff;
+}
+
+.stats-chart--calories {
+  background: var(--light-purple);
+  --stats-accent: var(--purple);
+}
+
+.stats-chart--protein {
+  background: var(--light-red);
+  --stats-accent: var(--red);
+}
+
+.stats-chart--fat {
+  background: var(--light-yellow);
+  --stats-accent: var(--yellow);
+}
+
+.stats-chart--carbs {
+  background: var(--light-green);
+  --stats-accent: var(--green);
+}
+
+.stats-chart__guide-row {
+  position: absolute;
+  z-index: 1;
+  right: 60px;
+  left: 10px;
+  border-top: 2px dashed rgb(255 255 255 / 85%);
+}
+
+.stats-chart__summary {
+  position: absolute;
+  inset: 0 8px 0 auto;
+  width: 50px;
+  text-align: left;
+}
+
+.stats-chart__summary p {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  line-height: 1;
+  transform: translateY(35%);
+}
+
+.stats-chart__summary svg {
+  position: absolute;
+  right: 13px;
+  bottom: 14px;
+}
+
+.stats-chart__summary span {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stats-chart__summary strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stats-chart__bars {
+  position: absolute;
+  inset: 0 58px 0 10px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats-chart__bars li {
+  position: relative;
+  width: min(100%, 39px);
+  justify-self: center;
+}
+
+.stats-chart__bar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 5px;
+  border-radius: 32px 32px 0 0;
+  background: var(--stats-accent);
+}
+
+.stats-chart__bar--initial,
+.stats-chart__bar--incoming {
+  animation: stats-bar-rise 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stats-chart__bars li:nth-child(2) .stats-chart__bar--initial {
+  animation-delay: 80ms;
+}
+
+.stats-chart__bars li:nth-child(3) .stats-chart__bar--initial {
+  animation-delay: 160ms;
+}
+
+.stats-chart__bars li:nth-child(4) .stats-chart__bar--initial {
+  animation-delay: 240ms;
+}
+
+.stats-chart__bars li:nth-child(5) .stats-chart__bar--initial {
+  animation-delay: 320ms;
+}
+
+.stats-chart__bars li:nth-child(6) .stats-chart__bar--initial {
+  animation-delay: 400ms;
+}
+
+.stats-chart__bars li:nth-child(7) .stats-chart__bar--initial {
+  animation-delay: 480ms;
+}
+
+@keyframes stats-bar-rise {
+  from { height: 0; }
+}
+
+.stats-chart__bar strong,
+.stats-chart__outside-value {
+  color: #fff;
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: -0.12em;
+  line-height: 1;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.stats-chart__outside-value {
+  position: absolute;
+  left: 50%;
+  color: var(--stats-accent);
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.progress-chart {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: visible;
+  text-align: center;
+  font-weight: 900;
+  border-radius: 32px;
+}
+
+.progress-chart--horizontal {
+  height: 110px;
+  padding: 10px 12px 0;
+  grid-template-rows: auto auto 1fr;
+}
+
+.progress-chart--vertical {
+  width: 120px;
+  height: 128px;
+  padding: 12px 8px 0;
+  grid-template-rows: auto auto 1fr;
+}
+
+.progress-chart__fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transition: width 450ms ease 120ms, height 450ms ease 120ms;
+}
+
+.progress-chart__clip {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.progress-chart__icon {
+  position: absolute;
+  z-index: 2;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-chart__fill {
+    transition: none;
+  }
+}
+
+.progress-chart--horizontal .progress-chart__fill {
+  top: 0;
+  max-width: 100%;
+  border-radius: 32px;
+
+}
+
+.progress-chart--vertical .progress-chart__fill {
+  right: 0;
+  border-radius: 32px 32px 0 0;
+}
+
+.progress-chart__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.progress-chart__limit {
+  position: absolute;
+  z-index: 1;
+  bottom: 13%;
+  left: 0;
+  width: 100%;
+  color: rgb(255 255 255 / 75%);
+  font-size: clamp(20px, 3vw, 34px);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.progress-chart--horizontal .progress-chart__limit {
+  bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.progress-chart--vertical .progress-chart__limit {
+  bottom: 12%;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.progress-chart__value {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  bottom: 27%;
+  left: 0;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  min-width: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.progress-chart--horizontal .progress-chart__value {
+  bottom: 24%;
+}
+
+.progress-chart--horizontal .progress-chart__value strong {
+  font-size: 64px;
+  font-weight: 700;
+  transform: none;
+}
+
+.progress-chart__value strong {
+  max-width: 100%;
+  font-size: clamp(88px, 14vw, 140px);
+  white-space: nowrap;
+  z-index: 200;
+  /*transform: translateY(14px);*/
+}
+
+.progress-chart--vertical .progress-chart__value strong {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.progress-chart--vertical .progress-chart__value {
+  bottom: 31%;
+}
+
+.meals-card {
+  width: min(380px, calc(100% - 40px));
+  margin: 12px auto 0;
+  padding: 0;
+  background: transparent;
+}
+
+.meal-entry { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 50px; padding: 7px 10px 7px 14px; border: 1px solid #e8e0f2; border-radius: 32px; background: #fbf9fe; color: #352c40; text-align: left; }
+.meal-entry strong { flex: 0 0 auto; font-size: 20px; line-height: 1; }
+.meal-entry__description { flex: 1; min-width: 0; overflow: hidden; color: #6b5a7c; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.meal-entry small { font-size: 11px; font-weight: 600; }
+.meal-entry__macros { display: flex; gap: 4px; }
+.meal-entry__macro { display: grid; min-width: 30px; height: 30px; place-items: center; border-radius: 32px; color: #fff; font-size: 13px; font-weight: 700; }
+.meal-entry__macro--protein { background: var(--red); }
+.meal-entry__macro--fat { background: var(--yellow); color: #533000; }
+.meal-entry__macro--carbs { background: var(--green); }
+.meal-types { padding-bottom: 110px; }
+.meal-types__heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.meal-types__heading h2 { margin: 0; color: var(--purple); font-size: 24px; }
+.meal-types__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.meal-type-card { position: relative; isolation: isolate; min-width: 0; height: 140px; overflow: visible; border-radius: 32px; background: var(--light-purple); color: #fff; }
+.meal-type-card--breakfast { --meal-accent: var(--red); }
+.meal-type-card--lunch { --meal-accent: var(--yellow); }
+.meal-type-card--dinner { --meal-accent: var(--green); }
+.meal-type-card--snack { --meal-accent: var(--purple); }
+.meal-type-card__open { position: absolute; z-index: 1; inset: 0; width: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; color: #fff; cursor: pointer; }
+.meal-type-card__calories { position: absolute; top: calc(50% - 20px); left: 50%; display: flex; align-items: baseline; transform: translate(-50%, -50%); }
+.meal-type-card__calories strong { font-size: 48px; font-weight: 700; line-height: 1; }
+.meal-type-card__macros { position: absolute; right: 0; bottom: 0; left: 0; display: grid; height: 52px; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; border-radius: 0 0 32px 32px; }
+.meal-type-card__macro { display: flex; min-width: 0; height: 100%; align-items: center; justify-content: center; gap: 4px; background: var(--macro-color); color: #fff; font-size: 17px; font-weight: 700; line-height: 1; }
+.meal-type-card__macro svg { width: 20px; height: 20px; flex: 0 0 auto; }
+.meal-type-card__macro--protein { --macro-color: var(--red); }
+.meal-type-card__macro--fat { --macro-color: var(--yellow); }
+.meal-type-card__macro--carbs { --macro-color: var(--green); }
+.meal-type-card__icon { position: absolute; z-index: 2; top: -8px; right: -8px; display: grid; width: 40px; height: 40px; place-items: center; border: 0; border-radius: 50%; background: #fff; color: var(--meal-accent); }
+.meal-type-details { margin-top: 14px; padding: 14px; border-radius: 32px; background: var(--pale-purple); }
+.meal-type-details__heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.meal-type-details__heading h3 { margin: 0; font-size: 21px; }
+.meal-type-details__actions { display: flex; align-items: center; gap: 6px; }
+.meal-type-details__actions button:first-child { min-height: 36px; padding: 0 12px; border: 0; border-radius: 32px; background: var(--purple); color: #fff; font-size: 13px; font-weight: 700; }
+.meal-type-details__actions button:last-child { display: grid; width: 30px; height: 30px; place-items: center; border: 0; border-radius: 50%; background: #fff; color: var(--purple); }
+.meal-type-details ul { display: grid; gap: 7px; margin: 0; padding: 0; list-style: none; }
+
+@media (min-width: 844px) {
+  .day-view__content { display: grid; grid-template-columns: 380px 380px; align-items: start; gap: 24px; width: 784px; max-width: calc(100% - 40px); margin: 0 auto; }
+  .day-view__content .nutrition-charts, .day-view__content .meals-card { width: 100%; margin: 0; }
+}
+
+@media (max-width: 843px) {
+  .app-header, .chat-view, .stats-view, .day-view > .section-placeholder { width: min(380px, calc(100% - 40px)); }
+  .meals-card { margin-top: 8px; }
+  .meal-type-card { height: clamp(92px, calc(50dvh - 242px), 124px); }
+  .meal-type-card__macros { height: 40px; }
+  .meal-type-card__macro { font-size: 15px; }
+  .meal-type-card__macro svg { width: 17px; height: 17px; }
+  .meal-type-card__calories { top: calc(50% - 14px); }
+}
+
+@media (max-width: 843px) and (max-height: 680px) {
+  .meal-type-card__macros { bottom: 4px; }
+}
+
+@media (max-width: 843px) and (max-height: 620px) {
+  .meals-card { margin-top: 4px; }
+}
+
+.button {
+  min-height: 44px;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 32px;
+}
+
+.meal-dialog {
+  width: min(720px, calc(100% - 40px));
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px;
+  border: 0;
+  border-radius: 32px;
+  background: #fff;
+  color: var(--light-purple);
+  box-shadow: 0 24px 72px rgb(23 39 29 / 22%);
+}
+
+.meal-dialog::backdrop {
+  background: rgb(0 0 0 / 78%);
+}
+
+.settings-dialog {
+  width: min(520px, calc(100% - 40px));
+}
+
+.dialog-heading {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dialog-heading h2 {
+  margin: 0;
+  color: inherit;
+  font-size: clamp(38px, 7vw, 58px);
+  font-weight: 900;
+}
+
+.meal-dialog__close {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--purple);
+}
+
+.meal-dialog__close:focus-visible {
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.meal-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 8px;
+}
+
+.meal-type-field,
+.meal-macro-field {
+  display: grid;
+  min-width: 0;
+}
+
+.meal-type-field {
+  grid-column: 1 / -1;
+}
+
+.meal-type-field select {
+  width: 100%;
+  height: 96px;
+  padding: 0 76px 0 28px;
+  border: 5px solid var(--light-purple);
+  border-radius: 32px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23cab2fb' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 13 9-9 9 9M7 19l9 9 9-9'/%3E%3C/svg%3E") no-repeat right 16px center / 28px;
+  color: inherit;
+  font-size: clamp(28px, 6vw, 46px);
+  font-weight: 900;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.meal-type-field select:focus,
+.meal-type-field select:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.meal-macro-field input:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.meal-macro-field {
+  gap: 10px;
+  color: inherit;
+  font-size: clamp(18px, 4vw, 28px);
+  font-weight: 900;
+  text-align: center;
+}
+
+.meal-macro-field input {
+  width: 100%;
+  height: 60px;
+  min-width: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 32px;
+  color: #fff;
+  font-size: clamp(34px, 7vw, 58px);
+  font-weight: 900;
+  text-align: center;
+  appearance: textfield;
+}
+
+.meal-macro-field input.meal-macro-input--zero {
+  color: #fff;
+}
+
+.meal-macro-field input::placeholder {
+  color: #fff;
+  opacity: 1;
+}
+
+.meal-macro-field input::-webkit-inner-spin-button,
+.meal-macro-field input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.meal-macro-field--protein input,
+.meal-form__delete {
+  background: var(--red);
+}
+
+.meal-macro-field--fat input {
+  background: var(--yellow);
+}
+
+.meal-macro-field--carbs input {
+  background: var(--green);
+}
+
+.meal-form__actions {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.meal-form__actions button {
+  width: 32%;
+  min-height: 64px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 32px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.meal-form__save {
+  margin-left: auto;
+  background: var(--teal);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 760px) {
+  .dashboard {
+    margin-top: 32px;
+  }
+
+  .stats-view {
+    height: calc(100dvh - 148px);
+  }
+
+}
+
+@media (max-width: 520px) {
+  .brand {
+    font-size: 24px;
+  }
+
+  .header-streak {
+    gap: 4px;
+    font-size: 24px;
+  }
+
+  .header-streak svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .nutrition-charts {
+    gap: 10px;
+    width: min(380px, calc(100% - 40px));
+  }
+
+  .nutrition-charts__macros {
+    gap: 10px;
+  }
+
+  .progress-chart--horizontal {
+    height: 110px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .progress-chart--vertical {
+    width: 120px;
+    height: 128px;
+  }
+
+  .progress-chart__value {
+    bottom: 28%;
+  }
+
+  .progress-chart--horizontal .progress-chart__value {
+    bottom: 24%;
+  }
+
+  .progress-chart--vertical .progress-chart__value strong {
+    font-size: 48px;
+    font-weight: 700;
+  }
+
+  .progress-chart__limit {
+    bottom: 14%;
+    font-size: 21px;
+  }
+
+  .meals-card {
+    padding: 0;
+  }
+
+  .dialog-heading {
+    margin-bottom: 18px;
+  }
+
+  .dialog-heading h2 {
+    font-size: 36px;
+  }
+
+  .meal-dialog__close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .meal-form {
+    gap: 9px 5px;
+  }
+
+  .meal-type-field select {
+    height: 72px;
+    padding: 0 18px;
+    border-width: 4px;
+    font-size: 28px;
+  }
+
+  .meal-macro-field {
+    gap: 6px;
+    font-size: 16px;
+  }
+
+  .meal-macro-field input {
+    border-radius: 32px;
+    font-size: 32px;
+  }
+
+  .meal-form__actions {
+    margin-top: 7px;
+  }
+
+  .meal-form__actions button {
+    width: 44%;
+    min-height: 54px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 400px) {
+  .nutrition-charts__macros {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .progress-chart--vertical {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .meal-type-card__icon { right: -6px; }
+}
+
+:root[data-theme="dark"] {
+  --light-purple: #614982;
+  --purple: #bb99f0;
+  --light-red: #823e58;
+  --red: #ff7fa1;
+  --light-yellow: #795b2a;
+  --yellow: #ffb547;
+  --light-green: #316a63;
+  --green: #55c9b9;
+  --teal: #44ad9f;
+  --pale-purple: #30283c;
+  --ring-track: #4a4155;
+  color: #f5f2f8;
+  background: #111115;
+  color-scheme: dark;
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] .day-view { background: #111115; }
+
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3 { color: #f5f2f8; }
+
+:root[data-theme="dark"] .app-footer { border-color: #49454e; background: #252329; }
+:root[data-theme="dark"] .app-footer__item { color: #99999e; }
+:root[data-theme="dark"] .app-footer__item:hover,
+:root[data-theme="dark"] .app-footer__item--active { color: #fff; }
+:root[data-theme="dark"] .theme-toggle { color: #e8d9ff; }
+:root[data-theme="dark"] .theme-toggle:hover { background: #30283c; }
+:root[data-theme="dark"] .section-placeholder,
+:root[data-theme="dark"] .summary-card,
+:root[data-theme="dark"] .meal-dialog { background: #222128; }
+:root[data-theme="dark"] .nutrition-charts,
+:root[data-theme="dark"] .meals-card { background: transparent; }
+:root[data-theme="dark"] .brand,
+:root[data-theme="dark"] .meal-types__heading h2 { color: var(--purple); }
+:root[data-theme="dark"] .section-placeholder { border-color: #3b3842; }
+:root[data-theme="dark"] .section-placeholder p { color: #b6b0c0; }
+
+:root[data-theme="dark"] .progress-chart__icon,
+:root[data-theme="dark"] .meal-type-card__icon,
+:root[data-theme="dark"] .meal-type-details__actions button:last-child { background: #25232c; }
+
+:root[data-theme="dark"] .meal-type-details { background: #30283c; }
+:root[data-theme="dark"] .meal-entry { border-color: #4b405a; background: #282630; color: #f5f2f8; }
+
+:root[data-theme="dark"] .chat-message { color: #f5f2f8; }
+:root[data-theme="dark"] .chat-message--you { color: #211729; }
+:root[data-theme="dark"] .chat-message__suggestion { background: #222128; }
+:root[data-theme="dark"] .chat-message__suggestion strong { color: #f5f2f8; }
+:root[data-theme="dark"] .chat-composer { background: #30283c; }
+:root[data-theme="dark"] .chat-composer__add { background: #25232c; }
+:root[data-theme="dark"] .chat-composer input { background: transparent; color: #f5f2f8; }
+:root[data-theme="dark"] .chat-composer input::placeholder { color: #a9a0b6; }
+:root[data-theme="dark"] .chat-composer__send:disabled { background: #453c50; color: #a9a0b6; }
+
+:root[data-theme="dark"] .meal-dialog { color: #dcc7f5; }
+:root[data-theme="dark"] .meal-type-field select { color: #f5f2f8; }
+:root[data-theme="dark"] button:focus-visible,
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] .day-view:focus-visible { outline-color: var(--yellow); }
+
+.meal-dialog--entry {
+  --dialog-accent: var(--purple);
+  --dialog-card: var(--light-purple);
+  --dialog-ink: #6d448d;
+  --dialog-action-text: #fff;
+  width: min(420px, calc(100% - 40px));
+  max-height: calc(100dvh - 40px);
+  overflow: visible;
+  padding: 20px;
+  color: #352c40;
+}
+
+.meal-dialog--entry .dialog-heading {
+  margin-bottom: 18px;
+}
+
+.meal-dialog--entry .dialog-heading h2 {
+  color: var(--dialog-ink);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.meal-dialog--entry .meal-dialog__close {
+  position: absolute;
+  z-index: 2;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--dialog-ink);
+}
+
+.meal-dialog--entry .meal-dialog__close:focus-visible {
+  background: #fff;
+}
+
+.meal-dialog--entry .meal-form {
+  gap: 16px 8px;
+  max-height: calc(100dvh - 128px);
+  overflow-y: auto;
+}
+
+.meal-dialog--entry .meal-type-field {
+  gap: 7px;
+}
+
+.meal-dialog--entry .meal-type-field select {
+  height: 56px;
+  padding: 0 48px 0 16px;
+  border: 2px solid var(--light-purple);
+  background-color: var(--pale-purple);
+  background-size: 20px;
+  color: #352c40;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.meal-description-field {
+  display: flex;
+  min-width: 0;
+  min-height: 172px;
+  grid-column: 1 / -1;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 32px;
+  background: var(--pale-purple);
+}
+
+.meal-dialog--entry .meal-description-field textarea {
+  width: 100%;
+  min-height: 112px;
+  min-width: 0;
+  flex: 1;
+  padding: 16px 16px 8px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  color: #352c40;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.meal-dialog--entry .meal-description-field textarea::placeholder { color: #716576; opacity: 1; }
+
+.meal-description-field__footer {
+  display: flex;
+  min-height: 50px;
+  align-items: end;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px 10px 12px;
+}
+
+.meal-description-field__attachments { display: flex; min-width: 0; align-items: end; gap: 6px; }
+.meal-description-field__add-image { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--purple); }
+.meal-description-field__add-image:disabled { cursor: default; opacity: .7; }
+.meal-description-field__images { display: flex; min-width: 0; gap: 6px; }
+.meal-description-field__image { position: relative; display: block; width: 48px; height: 48px; flex: 0 0 auto; }
+.meal-description-field__image img { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; }
+.meal-description-field__image button { position: absolute; top: -4px; right: -4px; display: grid; width: 18px; height: 18px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #6d448d; }
+.meal-description-field__wand { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--purple); }
+.meal-description-field__wand:disabled { cursor: default; opacity: .7; }
+.meal-description-field__error { margin: 0; padding: 0 12px 10px; color: #a52951; font-size: 12px; }
+
+.meal-dialog--entry .meal-macro-field {
+  align-content: space-between;
+  gap: 8px;
+  min-height: 110px;
+  padding: 12px 6px 10px;
+  border-radius: 32px;
+  background: var(--field-bg);
+  color: var(--field-ink);
+}
+
+.meal-dialog--entry .meal-macro-field--protein { --field-bg: var(--light-red); --field-ink: #7d1738; }
+.meal-dialog--entry .meal-macro-field--fat { --field-bg: var(--light-yellow); --field-ink: #6f4000; }
+.meal-dialog--entry .meal-macro-field--carbs { --field-bg: var(--light-green); --field-ink: #064d46; }
+
+.meal-macro-field__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.meal-dialog--entry .meal-macro-field input {
+  height: 52px;
+  padding: 0 2px;
+  background: transparent;
+  color: inherit;
+  font-size: clamp(28px, 8vw, 38px);
+  font-weight: 700;
+}
+
+.meal-dialog--entry .meal-macro-field input.meal-macro-input--zero,
+.meal-dialog--entry .meal-macro-field input::placeholder {
+  color: inherit;
+}
+
+.meal-dialog--entry .meal-macro-field input::placeholder { opacity: .68; }
+
+.meal-calories {
+  display: flex;
+  min-height: 54px;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px;
+  border-radius: 32px;
+  background: var(--pale-purple);
+  color: var(--dialog-ink);
+}
+
+.meal-calories strong { font-size: 28px; font-weight: 700; line-height: 1; }
+
+.meal-dialog--entry .meal-form__actions {
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.meal-dialog--entry .meal-form__actions button {
+  flex: 1;
+  width: auto;
+  min-height: 54px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.meal-dialog--entry .meal-form__save {
+  margin-left: 0;
+  background: var(--dialog-accent);
+  color: var(--dialog-action-text);
+}
+
+.meal-dialog--entry .meal-form__delete {
+  flex: 0 0 auto;
+  border: 2px solid var(--red);
+  background: transparent;
+  color: var(--red);
+}
+
+:root[data-theme="dark"] .meal-dialog--entry { --dialog-ink: var(--dialog-accent); --dialog-action-text: #211729; color: #f5f2f8; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-dialog__close { background: #fff; color: #5b3c74; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-description-field textarea { color: #f5f2f8; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-description-field textarea::placeholder { color: #c5bccb; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-type-field select { border-color: #614982; background-color: #30283c; color: #f5f2f8; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-macro-field--protein { --field-ink: #fff; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-macro-field--fat { --field-ink: #fff; }
+:root[data-theme="dark"] .meal-dialog--entry .meal-macro-field--carbs { --field-ink: #fff; }
+
+@media (max-width: 360px) {
+  .meal-dialog--entry .meal-macro-field { padding-right: 4px; padding-left: 4px; }
+  .meal-macro-field__label svg { width: 20px; height: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
